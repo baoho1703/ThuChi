@@ -1,0 +1,57 @@
+{
+    "canConnect": true,
+    "error": null,
+    "total": 5,
+    "items": [
+        {
+            "id": 1,
+            "username": "admin",
+            "password": "abc@123",
+            "fullname": "System admin",
+            "creatE_TIME": "201907100830",
+            "logiN_COUNT": 1,
+            "logiN_TIME": null,
+            "description": null
+        },
+        {
+            "id": 2,
+            "username": "hoanganh",
+            "password": "abc123",
+            "fullname": "黎國煌",
+            "creatE_TIME": "201907100840",
+            "logiN_COUNT": 0,
+            "logiN_TIME": null,
+            "description": null
+        },
+        {
+            "id": 3,
+            "username": "VNW0014502",
+            "password": "abc123",
+            "fullname": "國煌",
+            "creatE_TIME": "201907100850",
+            "logiN_COUNT": 0,
+            "logiN_TIME": null,
+            "description": null
+        },
+        {
+            "id": 4,
+            "username": "ngocvy",
+            "password": "abc123",
+            "fullname": "Ngoc Vy",
+            "creatE_TIME": "201907100851",
+            "logiN_COUNT": 0,
+            "logiN_TIME": null,
+            "description": null
+        },
+        {
+            "id": 5,
+            "username": "baoho",
+            "password": "abc123",
+            "fullname": "HO Bao",
+            "creatE_TIME": "201907100853",
+            "logiN_COUNT": 0,
+            "logiN_TIME": null,
+            "description": null
+        }
+    ]
+}
