@@ -1,39 +1,39 @@
 {
-    "item": [
+    "items": [
         {
             "id": 1,
             "username": "admin",
             "password": "abc@123",
-            "soTKVi": 100,
-            "soTKbank": 1000
+            "TK_Wallet": 100,
+            "TK_Bank": 1000
         },
         {
             "id": 2,
             "username": "hoanganh",
             "password": "abc123",
-            "soTKVi": 100,
-            "soTKbank": 1000
+            "TK_Wallet": 100,
+            "TK_Bank": 1000
         },
         {
             "id": 3,
             "username": "VNW0014502",
             "password": "abc123",
-            "soTKVi": 100,
-            "soTKbank": 1000
+            "TK_Wallet": 100,
+            "TK_Bank": 1000
         },
         {
             "id": 4,
             "username": "ngocvy",
             "password": "abc123",
-            "soTKVi": 100,
-            "soTKbank": 1000
+            "TK_Wallet": 100,
+            "TK_Bank": 1000
         },
         {
             "id": 5,
             "username": "baoho",
             "password": "abc123",
-            "soTKVi": 100,
-            "soTKbank": 1000
+            "TK_Wallet": 100,
+            "TK_Bank": 1000
         }
     ]
 }

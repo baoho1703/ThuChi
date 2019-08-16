@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add native-base --save
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add react-native-svg
 
 PATH: 
   D:\app\VNW0014639\product\11.2.0\client_1\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\nodejs\;C:\Program Files\Microsoft VS Code\bin;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\Git\cmd;C:\Users\VNW0014639\AppData\Local\Microsoft\WindowsApps;C:\Users\VNW0014639\AppData\Local\Yarn\bin;C:\Users\abobakr\AppData\Roaming\npm;C:\Users\VNW0014639\AppData\Roaming\npm;

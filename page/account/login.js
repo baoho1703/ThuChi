@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Content, Form, Item, Input, Label, Button, Text } from 'native-base';
+import { Container, Content, Form, Item, Input, Label, Button, Text, Title } from 'native-base';
 
 import taccounts from '../../data/taccounts.json'
 
@@ -59,7 +59,8 @@ class Login extends Component {
 							/>
 						</Item>
 						<Button block onPress={this.onSubmit} style={{ marginTop: 10, borderRadius: 8 }}>
-							<Text>Login</Text>
+							{/* <Text>LOGIN</Text> */}
+							<Title>LOGIN</Title>
 						</Button>
 					</Form>
 				</Content>
