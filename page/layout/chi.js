@@ -64,7 +64,7 @@ class Home extends Component {
         </Header>
         <Content style={{ backgroundColor: "#f2f2f2", position: 'relative' }}>
           {
-            this.state.add && <Card style={{ marginTop: 10, width: "94%", alignSelf: "center", borderRadius: 8, backgroundColor: "#0000" }}>
+            this.state.save && <Card style={{ marginTop: 10, width: "94%", alignSelf: "center", borderRadius: 8, backgroundColor: "#0000" }}>
               <Form>
                 <Item fixedLabel>
                   <Label style={{ borderRightWidth: 2 }}>Tên</Label>

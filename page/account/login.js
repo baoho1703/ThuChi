@@ -65,7 +65,7 @@ class Login extends Component {
 
 	render() {
 		return (
-			<Container>
+			<Container style={{ alignItems: "center" }}>
 				<Content>
 
 					<Thumbnail large source={{ uri: image }} style={{ flex: 1, top: '15%', width: "200 %", height: 171, borderRadius: 11 }} />
