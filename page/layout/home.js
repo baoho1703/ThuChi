@@ -57,32 +57,8 @@ class Home extends Component {
 					</List>
 
 				</Content>
-				<Footer>
-					<FooterTab>
-						{/* {footerTab.map((value, index) => {
-							<Button key={index}>
-								<Icon name="home"></Icon>
-								<Text style={{ color: "white" }}>Home</Text>
-							</Button>
-						})} */}
-						{/* <TouchableOpacity
-							style={styles.button}
-							onPress={() => this.props.navigation.navigate('Home')}>
-							<Text  >Home</Text>
-						</TouchableOpacity>
-
-						<TouchableOpacity
-							style={styles.button}
-							onPress={() => this.props.navigation.navigate('Thu')}>
-							<Text  >Thu</Text>
-						</TouchableOpacity>
-
-						<TouchableOpacity
-							style={styles.button}
-							onPress={() => this.props.navigation.navigate('Chart')}>
-							<Text  >Chart</Text>
-						</TouchableOpacity> */}
-
+				{/* <Footer>
+					<FooterTab> 
 						<Button onPress={() => this.props.navigation.navigate('Home')}>
 							<Icon name="home"></Icon>
 							<Text style={{ color: "white" }}>Home</Text>
@@ -100,7 +76,7 @@ class Home extends Component {
 							<Text style={{ color: "white" }}>Chart</Text>
 						</Button>
 					</FooterTab>
-				</Footer>
+				</Footer> */}
 			</Container >
 
 		);
