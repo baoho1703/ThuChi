@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native'
 import { Container, Content, Footer, Header, Body, Title, Label, Text, Form, Item, FooterTab, Button, Icon, List, ListItem, Accordion } from 'native-base'
+import { FontAwesome } from '@expo/vector-icons';
 import {
   LineChart,
   BarChart,
@@ -30,11 +31,9 @@ class Home extends Component {
       { title: "Cân Đối", content: "1000000" }
     ];
     const data = [
-      { name: 'Seoul', population: 21500000, color: 'rgba(131, 167, 234, 1)', legendFontColor: '#7F7F7F', legendFontSize: 14 },
-      { name: 'Toronto', population: 2800000, color: '#F00', legendFontColor: '#7F7F7F', legendFontSize: 14 },
-      { name: 'Beijing', population: 527612, color: '#7c9e9e', legendFontColor: '#7F7F7F', legendFontSize: 14 },
-      { name: 'New York', population: 8538000, color: '#2ed4d4', legendFontColor: '#7F7F7F', legendFontSize: 14 },
-      { name: 'Moscow', population: 11920000, color: 'rgb(0, 0, 255)', legendFontColor: '#7F7F7F', legendFontSize: 14 }
+      { name: 'Thu', population: 10000000, color: 'rgba(131, 167, 234, 1)', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'credit-card' },
+      { name: 'Chi', population: 7000000, color: '#F00', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'cart-plus' },
+      { name: 'Dư', population: 3000000, color: 'rgb(0, 0, 255)', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'google-wallet' }
     ]
     return (
       <Container style={{ width: "100%" }}>
@@ -46,61 +45,67 @@ class Home extends Component {
           </Body>
         </Header>
         <Content>
-
           <View>
-
             <PieChart
               data={data}
               width={Dimensions.get('window').width}
               height={220}
               chartConfig={{
                 color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-
               }}
               accessor="population"
               backgroundColor="transparent"
               paddingLeft="15"
               absolute
-
             />
           </View>
           <List>
+            {/* {data.map((value, index) => {
+              <ListItem>
+                <FontAwesome name="credit-card" style={{ fontSize: 24 }}>   </FontAwesome>
+                <Label>Doanh Thu  :</Label>
+                <Label>  {data.population}</Label>
+              </ListItem>
+            })} */}
+
+
+
             <ListItem itemDivider>
               <Text>Doanh Thu</Text>
             </ListItem>
             <ListItem style={{ borderBottomWidth: 0 }}>
-              <Text >1000000</Text>
+              <Text >10000000</Text>
             </ListItem>
             <ListItem itemDivider>
               <Text>Chi Tiêu </Text>
             </ListItem>
             <ListItem style={{ borderBottomWidth: 0 }}>
-              <Text>1000000</Text>
+              <Text>7000000</Text>
             </ListItem>
             <ListItem itemDivider>
               <Text>Cân Đối</Text>
             </ListItem>
             <ListItem style={{ borderBottomWidth: 0 }}>
-              <Text>1000000</Text>
+              <Text>3000000</Text>
             </ListItem>
-          </List>
-
-          <List>
-            <Accordion dataArray={dataArray} />
 
 
-            <ListItem>
+
+            {/* <ListItem>
+              <FontAwesome name="credit-card" style={{ fontSize: 24 }}>   </FontAwesome>
               <Label>Doanh Thu  :</Label>
-              <Label>  1000000</Label>
+              <Label>  {data.population}</Label>
             </ListItem>
             <ListItem>
+              <FontAwesome name="cart-plus" style={{ fontSize: 24 }}>   </FontAwesome>
               <Label>Chi Tiêu       :</Label>
-              <Label>  1000000</Label>
+              <Label>  {}}</Label>
             </ListItem>
             <ListItem>
+              <FontAwesome name="google-wallet" style={{ fontSize: 24 }}>   </FontAwesome>
               <Label>Cân Đối        : </Label>
-              <Label> 1000000</Label>
-            </ListItem>
+              <Label> 3000000</Label>
+            </ListItem> */}
 
           </List>
         </Content>
@@ -130,3 +135,7 @@ class Home extends Component {
 }
 
 export default Home;
+
+
+
+{/* <Accordion dataArray={dataArray} /> */ }

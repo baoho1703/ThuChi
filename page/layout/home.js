@@ -5,21 +5,41 @@ import { Container, Content, Footer, Header, Body, Title, Label, Form, Item, Foo
 import DataMoney from '../../data/dataAccout.json'
 import Uri from '../../image/user.png'
 
+
+
 class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.initState();
 	}
-
 	initState = () => {
 
 	}
 
+	footerTab = () => {
+		// var footerTab = [
+		// 	{ title: "Home", screen: "Screen1", icon: "home" },
+		// ];
+		//	footerTab.map((value, index) => {
+		console.log('value', value);
+		//return (
+
+		// <Button key={index}>
+		// 	<Icon name="home"></Icon>
+		// 	<Text style={{ color: "white" }}>Home</Text>
+		// </Button>
+		//console.log('value', value);
+		// <Text style={{ color: "white" }}>Home </Text>
+		//)
+		//})
+	}
 	render() {
+		// var footerTab = [
+		// 	{ title: "Home", screen: "Screen1", icon: "home" },
+		// ]
 		var index = DataMoney.items.findIndex(t => t.username === "baoho");
 		var data = DataMoney.items[index];
 		const uri = Uri;
-		console.log('data', data)
 		return (
 			<Container style={{ width: "100%" }}>
 				<Header>
@@ -30,16 +50,14 @@ class Home extends Component {
 					</Body>
 				</Header>
 				<Content>
-
 					<Thumbnail large source={{ uri: uri }} style={{ borderWidth: 1, flex: 1, left: '40%', top: '15%' }} />
-
 					<List style={{ paddingTop: 100 }}>
 						<ListItem>
 							<Left>
 								<Label>Name</Label>
 							</Left>
 							<Body>
-								<Text>{data.username}</Text>
+								<Text>:  {data.username}</Text>
 							</Body>
 						</ListItem>
 
@@ -48,7 +66,7 @@ class Home extends Component {
 								<Label>So TK Vi</Label>
 							</Left>
 							<Body>
-								<Text>{data.TK_Wallet}</Text>
+								<Text>:  {data.TK_Wallet} VND</Text>
 							</Body>
 						</ListItem>
 
@@ -57,68 +75,52 @@ class Home extends Component {
 								<Label>So TK Ngan Hang</Label>
 							</Left>
 							<Body>
-								<Text>{data.TK_Bank}</Text>
+								<Text>:  {data.TK_Bank} VND</Text>
 							</Body>
 						</ListItem>
 
 						<ListItem>
 							<Left>
-								<Label>Sum</Label>
+								<Label>Tổng Tài Khoản</Label>
 							</Left>
 							<Body>
-								<Text>{data.TK_Bank + data.TK_Wallet}</Text>
+								<Text>:  {data.TK_Bank + data.TK_Wallet} VND</Text>
 							</Body>
 						</ListItem>
 					</List>
-					{/* <Item fixedLabel>
-							<Label>Name</Label><Label>{data.username}</Label>
-							<Body style={{ left: 0, paddingLeft: 0 }}>
 
-							</Body>
-						</Item>
-						<Item fixedLabel>
-							<Label>So TK Vi</Label>
-							<Right>
-								<Text>{data.TK_Wallet}</Text>
-							</Right>
-						</Item>
-						<Item fixedLabel>
-							<Label>So TK Ngan Hang</Label>
-							<Body>
-								<Text>{data.TK_Bank}</Text>
-							</Body>
-						</Item>
-						<Item fixedLabel>
-							<Label>Sum</Label>
-							<Body>
-								<Text>{data.TK_Bank + data.TK_Wallet}</Text>
-							</Body>
-						</Item> */}
 
 				</Content>
 				<Footer>
 					<FooterTab>
-						<Button vertical>
+						{this.footerTab}
+						{/* <Button  >
 							<Icon name="home"></Icon>
-							<Text>Home</Text>
+							<Text style={{ color: "white" }}>Home</Text>
 						</Button>
-						<Button vertical>
+						<Text style={{ color: "white" }}>Home</Text> */}
+						{/* <Button >
+							<Icon name="home"></Icon>
+							<Text style={{ color: "white" }}>Home</Text>
+						</Button>
+						<Button  >
 							<Icon name="calendar"></Icon>
-							<Text>Thu</Text>
+							<Text style={{ color: "white" }}>Thu</Text>
 						</Button>
-						<Button vertical>
+						<Button  >
 							<Icon name="cart"></Icon>
-							<Text>Chi</Text>
+							<Text style={{ color: "white" }}>Chi</Text>
 						</Button>
-						<Button vertical>
+						<Button  >
 							<Icon name="ios-stats"></Icon>
-							<Text>Chart</Text>
-						</Button>
+							<Text style={{ color: "white" }}>Chart</Text>
+						</Button> */}
 					</FooterTab>
 				</Footer>
 			</Container >
 		);
 	}
 }
+
 
 export default Home;
