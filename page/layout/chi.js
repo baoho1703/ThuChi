@@ -69,7 +69,7 @@ class Home extends Component {
   render() {
 
     return (
-      <Container style={{ width: "100%" }}>
+      <Container  >
         <Header>
           <Body>
             <Title style={{ alignSelf: "center" }}>
@@ -151,7 +151,6 @@ class Home extends Component {
                   </Right>
                 </CardItem>
               </Card>
-
             })
           }
 
@@ -172,28 +171,7 @@ class Home extends Component {
               </Right>
             </CardItem>
           </Card>
-
         </Content>
-        {/* <Footer>
-          <FooterTab>
-            <Button vertical>
-              <Icon name="home"></Icon>
-              <Text style={{ color: "white" }}>Home</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="calendar"></Icon>
-              <Text style={{ color: "white" }}>Thu</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="cart"></Icon>
-              <Text style={{ color: "white" }}>Chi</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="ios-stats"></Icon>
-              <Text style={{ color: "white" }}>Chart</Text>
-            </Button>
-          </FooterTab>
-        </Footer> */}
       </Container >
     );
   }

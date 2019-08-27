@@ -33,7 +33,7 @@ class Home extends Component {
       { name: 'Dư', population: 8000000, color: 'rgb(0, 0, 255)', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'google-wallet' }
     ]
     return (
-      <Container style={{ width: "100%" }}>
+      <Container >
         <Header>
           <Body>
             <Title style={{ alignSelf: "center" }}>
@@ -67,74 +67,9 @@ class Home extends Component {
             })}
           </List>
         </Content>
-        {/* <Footer>
-          <FooterTab>
-            <Button vertical>
-              <Icon name="home"></Icon>
-              <Text>Home</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="calendar"></Icon>
-              <Text>Thu</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="cart"></Icon>
-              <Text>Chi</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="ios-stats"></Icon>
-              <Text>Chart</Text>
-            </Button>
-          </FooterTab>
-        </Footer> */}
       </Container>
     );
   }
 }
 
 export default Home;
-
-{/* <ListItem>
-              <FontAwesome name="credit-card" style={{ fontSize: 24 }}>   </FontAwesome>
-              <Label>Doanh Thu  :</Label>
-              <Label>  {data.population}</Label>
-            </ListItem>
-            <ListItem>
-              <FontAwesome name="cart-plus" style={{ fontSize: 24 }}>   </FontAwesome>
-              <Label>Chi Tiêu       :</Label>
-              <Label>  {}}</Label>
-            </ListItem>
-            <ListItem>
-              <FontAwesome name="google-wallet" style={{ fontSize: 24 }}>   </FontAwesome>
-              <Label>Cân Đối        : </Label>
-              <Label> 3000000</Label>
-            </ListItem> */}
-{/* <List>
-            <ListItem itemDivider>
-              <Text>Doanh Thu</Text>
-            </ListItem>
-            <ListItem style={{ borderBottomWidth: 0 }}>
-              <Text >10000000</Text>
-            </ListItem>
-            <ListItem itemDivider>
-              <Text>Chi Tiêu </Text>
-            </ListItem>
-            <ListItem style={{ borderBottomWidth: 0 }}>
-              <Text>7000000</Text>
-            </ListItem>
-            <ListItem itemDivider>
-              <Text>Cân Đối</Text>
-            </ListItem>
-            <ListItem style={{ borderBottomWidth: 0 }}>
-              <Text>3000000</Text>
-            </ListItem>
-          </List> */}
-
-
-{/* <Accordion dataArray={dataArray} /> 
- const dataArray = [
-      { title: "Doanh Thu ", content: "1000000" },
-      { title: "Chi Tiêu", content: "1000000" },
-      { title: "Cân Đối", content: "1000000" }
-    ];
-*/ }

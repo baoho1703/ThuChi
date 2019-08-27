@@ -56,7 +56,7 @@ class Login extends Component {
 			// 	return;
 			// }
 			if (username === item.username && password === item.password) {
-				this.props.checkLogin({ okLogin: true, account: this.state.account });
+				this.props.checkLogin({ okLogin: true, username: this.state.account.username });
 				return
 			}
 		})

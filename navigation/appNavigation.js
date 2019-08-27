@@ -9,7 +9,7 @@ import Chart from '../page/layout/chart'
 
 const Navigator = createBottomTabNavigator({
 
-	Home: { screen: Home },
+	Home: { screen: Home, },
 	Thu: { screen: Thu },
 	Chi: { screen: Chi },
 	Chart: { screen: Chart },
@@ -39,26 +39,11 @@ const Navigator = createBottomTabNavigator({
 			},
 		}),
 
-		// tabBarOptions: {
-		// 	activeTintColor: '#FF6F00',
-		// 	inactiveTintColor: '#263238',
-		// },
 	}
 )
 
 export default createAppContainer(Navigator)
 
-// const styles = StyleSheet.create({
-// 	container: {
-// 		flex: 1,
-// 		alignItems: 'center',
-// 		justifyContent: 'center'
-// 	},
-// 	paragraph: {
-// 		fontSize: 18,
-// 		fontWeight: 'bold',
-// 	},
-// })	
 
 
 
