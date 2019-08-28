@@ -4,6 +4,7 @@ import { Container, Content, Header, Body, Title, Button, Icon, Card, CardItem, 
 
 import { FontAwesome } from '@expo/vector-icons';
 
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -13,58 +14,82 @@ class Home extends Component {
 
   initState = () => {
     this.state = {
-      add: false,
-      edit: false,
-      moneys: {
-        name: '',
-        money: ''
-      },
+      addStatus: false,
+      editStatus: false,
+      addMoneys: '',
       thu: [],
-      _edit: '',
+      editMoneys: '',
       index: '',
+      total: 0,
     }
   }
 
+
   addThu = () => {
     this.setState({
-      add: true,
+      addStatus: true,
+      editStatus: false,
     })
   }
   editThu = (index) => {
     this.setState({
-      edit: true,
-      _edit: this.state.thu[index],
+      editStatus: true,
+      addStatus: false,
+      editMoneys: this.state.thu[index],
       index: index,
     })
   }
 
   setValue = (text) => {
+
     this.setState({
-      _edit: {
-        ...this.state._edit,
+      editMoneys: {
+        ...this.state.editMoneys,
         ...text,
       },
-      moneys: {
-        ...this.state.moneys,
+      addMoneys: {
+        ...this.state.addMoneys,
         ...text
       }
     })
   }
 
   onSubmit = () => {
-    var data = this.state.moneys;
-    this.state.thu.push(data)
+    var data = this.state.addMoneys;
+    this.state.thu.push(data);
+    var total = parseInt(this.state.total) + parseInt(data.money);
     this.setState({
-      add: false,
+      addStatus: false,
+      total: total,
     })
   }
 
   onSubmitEdit = () => {
-    var editThu = this.state._edit;
+    var exampleNew = parseInt(this.state.editMoneys.money);
+    var exampleOld = parseInt(this.state.thu[this.state.index].money);
+    var totals = this.state.total;
+    if (exampleNew > exampleOld) {
+      var data = exampleNew - exampleOld;
+      var total = totals + data;
+    }
+    else {
+      var data = exampleOld - exampleNew;
+      var total = totals - data;
+    }
+
+    var editThu = this.state.editMoneys;
     this.state.thu.splice(this.state.index, 1, editThu),
       this.setState({
-        edit: false
+        editStatus: false,
+        total: total
       })
+  }
+
+  onClose = () => {
+    this.setState({
+      addStatus: false,
+      editStatus: false,
+    })
   }
   render() {
 
@@ -74,7 +99,9 @@ class Home extends Component {
           <Body>
             <Title style={{ alignSelf: "center" }}>
               Doanh Thu
-						</Title>
+            </Title>
+            <Title style={{ fontSize: 13, paddingLeft: '25%' }}>Tong Thu:({this.state.total} VND)</Title>
+
           </Body>
           <Right>
             <Button style={style.buton_add} onPress={this.addThu} >
@@ -86,7 +113,7 @@ class Home extends Component {
         <Content style={{ backgroundColor: "#f2f2f2", position: 'relative' }}>
 
           {/* Add Thu Chi */}
-          {this.state.add && <Card style={style.card}>
+          {this.state.addStatus && <Card style={style.card}>
             <Form>
               <Item fixedLabel>
                 <Label style={{ borderRightWidth: 2 }}>Tên</Label>
@@ -100,59 +127,71 @@ class Home extends Component {
                   onChangeText={(text) => this.setValue({ money: text })}
                 />
               </Item>
-              <Button block onPress={this.onSubmit} style={style.button_save}>
-                <Title>ADD</Title>
-              </Button>
+
+              <Item>
+                <Button block onPress={this.onSubmit} style={style.button_save} >
+                  <Title>ADD</Title>
+                </Button>
+                <Button block onPress={this.onClose} style={style.button_close} >
+                  <Title>CLOSE</Title>
+                </Button>
+              </Item>
             </Form>
           </Card>
           }
 
           {/* Edit Thu Chi */}
-          {this.state.edit && <Card style={style.card}>
+          {this.state.editStatus && <Card style={style.card}>
             <Form>
               <Item fixedLabel>
                 <Label style={{ borderRightWidth: 2 }}>Tên</Label>
                 <Input
-                  value={this.state._edit.name}
+                  value={this.state.editMoneys.name}
                   onChangeText={(text) => this.setValue({ name: text })}
                 />
               </Item>
               <Item fixedLabel last>
                 <Label style={{ borderRightWidth: 2 }}>Số tiền</Label>
                 <Input
-                  value={this.state._edit.money}
+                  value={this.state.editMoneys.money}
                   onChangeText={(text) => this.setValue({ money: text })}
                 />
               </Item>
-              <Button block onPress={this.onSubmitEdit} style={style.button_save}>
-                <Title>SAVE</Title>
-              </Button>
+
+              <Item>
+                <Button block onPress={this.onSubmitEdit} style={style.button_save}>
+                  <Title>SAVE</Title>
+                </Button>
+                <Button block onPress={this.onClose} style={style.button_close} >
+                  <Title>CLOSE</Title>
+                </Button>
+              </Item>
             </Form>
           </Card>
           }
 
           {/* List Thu Chi */}
-          {
-            this.state.thu.map((item, index) => {
-              return <Card style={style.card} key={index}>
-                <CardItem style={style.cardItem} >
-                  <Left>
-                    <Icon name="wallet" ></Icon>
-                    <Body>
-                      <Text>{item.name}</Text>
-                      <Text>{item.money} VND</Text>
-                    </Body>
-                  </Left>
-                  <Right>
-                    <Button onPress={() => this.editThu(index)} style={style.button_edit}>
-                      <FontAwesome name="edit" style={{ fontSize: 24 }} ></FontAwesome>
-                    </Button>
-                    <Text>2019/08/14</Text>
-                  </Right>
-                </CardItem>
-              </Card>
+          {this.state.thu.map((item, index) => {
+            return <Card style={style.card} key={index}>
+              <CardItem style={style.cardItem} >
+                <Left>
+                  <Icon name="wallet" ></Icon>
+                  <Body>
+                    <Text>{item.name}</Text>
+                    <Text>{item.money} VND</Text>
+                  </Body>
+                </Left>
+                <Right>
+                  <Button onPress={() => this.editThu(index)} style={style.button_edit}>
+                    <FontAwesome name="edit" style={{ fontSize: 24 }} ></FontAwesome>
+                  </Button>
+                  <Text>2019/08/14</Text>
+                </Right>
 
-            })
+              </CardItem>
+            </Card>
+
+          })
           }
 
           <Card style={style.card}>
@@ -174,26 +213,6 @@ class Home extends Component {
           </Card>
 
         </Content>
-        {/* <Footer>
-          <FooterTab>
-            <Button vertical>
-              <Icon name="home"></Icon>
-              <Text style={{ color: "white" }}>Home</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="calendar"></Icon>
-              <Text style={{ color: "white" }}>Thu</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="cart"></Icon>
-              <Text style={{ color: "white" }}>Chi</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="ios-stats"></Icon>
-              <Text style={{ color: "white" }}>Chart</Text>
-            </Button>
-          </FooterTab>
-        </Footer> */}
       </Container >
     );
   }
@@ -229,6 +248,15 @@ const style = StyleSheet.create({
     borderRadius: 8,
     width: "30%",
     alignSelf: "center",
+    marginLeft: '7%',
     marginTop: 0
   },
+  button_close: {
+    marginTop: 10,
+    borderRadius: 8,
+    width: "30%",
+    alignSelf: "center",
+    marginLeft: '22%',
+    marginTop: 0
+  }
 })

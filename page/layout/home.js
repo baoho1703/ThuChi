@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, AsyncStorage } from 'react-native';
 import { Container, Content, Header, Body, Title, Label, Thumbnail, List, ListItem, Left } from 'native-base'
+import { connect } from "react-redux"
 
 import DataMoney from '../../data/dataAccout.json'
 import Uri from '../../image/user.png'
@@ -59,12 +60,10 @@ class Home extends Component {
 	}
 
 	render() {
-		console.log('dataAccount', this.state.dataAccount)
 		if (!this.checkData() || this.state.loading)
 			return null;
-		console.log('dataAccount', this.state.dataAccout)
 		const { dataAccout } = this.state;
-		var index = dataAccout.findIndex(t => t.username === "baoho");
+		var index = dataAccout.findIndex(t => t.username === this.props.account.username);
 		var data = dataAccout[index];
 
 		var accountInformation = [
@@ -107,4 +106,9 @@ class Home extends Component {
 	}
 }
 
-export default Home;
+const mapStateToProps = state => ({
+	account: state.account,
+})
+
+
+export default connect(mapStateToProps, null)(Home);

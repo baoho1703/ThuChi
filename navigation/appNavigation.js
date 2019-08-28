@@ -9,7 +9,7 @@ import Chart from '../page/layout/chart'
 
 const Navigator = createBottomTabNavigator({
 
-	Home: { screen: Home, },
+	Home: { screen: Home },
 	Thu: { screen: Thu },
 	Chi: { screen: Chi },
 	Chart: { screen: Chart },
