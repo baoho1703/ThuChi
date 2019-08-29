@@ -1,42 +1,77 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Container, Content, Footer, Header, Body, Title, Label, FooterTab, Button, Icon, Thumbnail, List, ListItem, Left } from 'native-base'
+import { Text, AsyncStorage } from 'react-native';
+import { Container, Content, Header, Body, Title, Label, Thumbnail, List, ListItem, Left } from 'native-base'
+import { connect } from "react-redux"
 
 import DataMoney from '../../data/dataAccout.json'
 import Uri from '../../image/user.png'
 
-
+const STORE_KEY = '1234123412341234';
 
 class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.initState();
 	}
+
 	initState = () => {
-
+		this.state = {
+			loading: true,
+		}
 	}
 
-	footerTab = () => {
-		// var footerTab = [
-		// 	{ title: "Home", screen: "Screen1", icon: "home" },
-		// ];
-		//	footerTab.map((value, index) => {
-		console.log('value', value);
-		//return (
+	componentWillMount() {
 
-		// <Button key={index}>
-		// 	<Icon name="home"></Icon>
-		// 	<Text style={{ color: "white" }}>Home</Text>
-		// </Button>
-		//console.log('value', value);
-		// <Text style={{ color: "white" }}>Home </Text>
-		//)
-		//})
+		if (!this.checkData()) {
+
+			this.save_Data();
+		}
+		this.load_Data();
 	}
+
+	checkData = async () => {
+		//check
+		var hadData = false;
+		const value = await AsyncStorage.getItem(STORE_KEY);
+		if (value !== null)
+			hadData = true;
+		return hadData;
+	}
+
+	load_Data = async () => {
+		console.log("load_Data")
+		try {
+			var data = await AsyncStorage.getItem(STORE_KEY);
+			var dataAccout = JSON.parse(data);
+			this.setState({
+				loading: false,
+				dataAccout: dataAccout
+			});
+		} catch (e) {
+			console.log('Failed to load_AsyncStorage ', e)
+		}
+	}
+
+	save_Data = async () => {
+		console.log('Save_Data')
+		try {
+			await AsyncStorage.setItem(STORE_KEY, JSON.stringify(DataMoney))
+				.then(() => { console.log("Save Successfully") })
+		} catch (error) {
+			console.log('Failed to save_AsyncStorage', error);
+		}
+	}
+
 	render() {
-		var index = DataMoney.items.findIndex(t => t.username === "baoho");
-		var data = DataMoney.items[index];
-		const uri = Uri;
+
+		if (!this.checkData() || this.state.loading)
+			return null;
+		console.log('dataqq', this.state)
+		console.log('data', DataMoney)
+		const { dataAccout } = this.state;
+		var index = dataAccout.findIndex(t => t.username === this.props.account.username);
+		var data = dataAccout[index];
+
 		var accountInformation = [
 			{ name: 'Name', data: data.username },
 			{ name: 'So TK Vi', data: data.TK_Wallet },
@@ -45,7 +80,8 @@ class Home extends Component {
 		];
 
 		return (
-			<Container style={{ width: "100%" }}>
+			<Container  >
+				{console.log('retrun')}
 				<Header>
 					<Body>
 						<Title style={{ alignSelf: "center" }}>
@@ -54,77 +90,32 @@ class Home extends Component {
 					</Body>
 				</Header>
 				<Content>
-					<Thumbnail large source={{ uri: uri }} style={{ borderWidth: 1, flex: 1, left: '40%', top: '15%' }} />
+					<Thumbnail large source={{ uri: Uri }} style={{ borderWidth: 1, flex: 1, left: '40%', top: '15%' }} />
 
 					{/* List Thông tin người dùng	 */}
 					<List style={{ paddingTop: 100 }}>
 						{accountInformation.map((value, index) => {
 							return (
-								<ListItem>
+								<ListItem key={index}>
 									<Left>
 										<Label>{value.name}</Label>
-										<Text>:</Text>
 									</Left>
 									<Body>
-										<Text style={{ position: index == 0 ? '' : 'absolute', right: 60 }}>  {value.data}</Text>
+										<Text>:  {value.data}</Text>
 									</Body>
 								</ListItem>)
 						})}
 					</List>
-
 				</Content>
-				{/* <Footer>
-					<FooterTab> 
-						<Button onPress={() => this.props.navigation.navigate('Home')}>
-							<Icon name="home"></Icon>
-							<Text style={{ color: "white" }}>Home</Text>
-						</Button>
-						<Button onPress={() => this.props.navigation.navigate('Thu')}>
-							<Icon name="calendar"></Icon>
-							<Text style={{ color: "white" }}>Thu</Text>
-						</Button>
-						<Button onPress={() => this.props.navigation.navigate('Chi')}>
-							<Icon name="cart"></Icon>
-							<Text style={{ color: "white" }}>Chi</Text>
-						</Button>
-						<Button onPress={() => this.props.navigation.navigate('Chart')}>
-							<Icon name="ios-stats"></Icon>
-							<Text style={{ color: "white" }}>Chart</Text>
-						</Button>
-					</FooterTab>
-				</Footer> */}
 			</Container >
-
 		);
 	}
 }
 
+const mapStateToProps = state => (
+	{
+		account: state.account,
+	})
 
-export default Home;
 
-const styles = StyleSheet.create({
-
-	MainContainer: {
-
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#f5fcff',
-		padding: 11
-
-	},
-
-	button: {
-		alignItems: 'center',
-		backgroundColor: '#43A047',
-		padding: 12,
-		width: 280,
-		marginTop: 12,
-	},
-
-	text: {
-
-		color: '#fff'
-	}
-
-});
+export default connect(mapStateToProps, null)(Home);

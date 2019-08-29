@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Image, Text } from 'react-native';
 import { Container, Content, Form, Item, Input, Label, Button, Title, Thumbnail } from 'native-base';
+import { connect } from 'react-redux'
 
 import taccounts from '../../data/taccounts.json'
 import image from '../../image/logo.png'
+import { checkAccount } from '../../action/actionAccount.js';
 
 class Login extends Component {
 	constructor(props) {
@@ -15,7 +17,7 @@ class Login extends Component {
 		this.state = {
 			account: {
 				username: 'baoho',
-				password: 'abc123',
+				password: 'abc1234',
 			},
 			status: '',
 			isLogin: true,
@@ -27,6 +29,7 @@ class Login extends Component {
 			account: {
 				...this.state.account,
 				...data
+
 			}
 		})
 	}
@@ -56,7 +59,10 @@ class Login extends Component {
 			// 	return;
 			// }
 			if (username === item.username && password === item.password) {
-				this.props.checkLogin({ okLogin: true, account: this.state.account });
+
+				this.props.checkLogin({ okLogin: true });
+				this.props.login(username, password);
+
 				return
 			}
 		})
@@ -95,4 +101,10 @@ class Login extends Component {
 		);
 	}
 }
-export default Login;
+
+const mapDispatchToProps = dispatch => {
+	return {
+		login: (username, password) => dispatch(checkAccount(username, password)),
+	}
+}
+export default connect(null, mapDispatchToProps)(Login);

@@ -24,7 +24,7 @@ class Home extends Component {
       { name: 'Dư', population: 8000000, color: 'rgb(0, 0, 255)', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'google-wallet' }
     ]
     return (
-      <Container style={{ width: "100%" }}>
+      <Container >
         <Header>
           <Body>
             <Title style={{ alignSelf: "center" }}>
@@ -58,30 +58,9 @@ class Home extends Component {
             })}
           </List>
         </Content>
-        {/* <Footer>
-          <FooterTab>
-            <Button vertical>
-              <Icon name="home"></Icon>
-              <Text>Home</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="calendar"></Icon>
-              <Text>Thu</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="cart"></Icon>
-              <Text>Chi</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="ios-stats"></Icon>
-              <Text>Chart</Text>
-            </Button>
-          </FooterTab>
-        </Footer> */}
       </Container>
     );
   }
 }
 
 export default Home;
-
