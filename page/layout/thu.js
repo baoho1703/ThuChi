@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet, AsyncStorage } from 'react-native'
 import { Container, Content, Header, Body, Title, Button, Icon, Card, CardItem, Left, Right, Form, Item, Label, Input } from 'native-base'
-
 import { FontAwesome } from '@expo/vector-icons';
+import { connect } from 'react-redux'
+import { addIncome, editIncome } from '../../action/actionIncome';
 
 
+const KeyIncome = '1111111111';
 class Home extends Component {
   constructor(props) {
     super(props);
     this.initState();
-
   }
 
   initState = () => {
@@ -17,13 +18,64 @@ class Home extends Component {
       addStatus: false,
       editStatus: false,
       addMoneys: '',
-      thu: [],
+      //  thu: [],
       editMoneys: '',
       index: '',
       total: 0,
+      loading: true,
     }
   }
 
+  componentWillMount() {
+
+    // console.log("CHECK_DATA ", !this.checkData())
+    if (!this.checkData()) {
+      this.save_Data();
+    }
+    this.load_Data();
+  }
+
+  checkData = async () => {
+    //check
+    var hadData = false;
+    const value = await AsyncStorage.getItem(KeyIncome);
+    if (value !== null)
+      hadData = true;
+    return hadData;
+  }
+
+  load_Data = async () => {
+    console.log("load_Data")
+    try {
+      var data = await AsyncStorage.getItem(KeyIncome);
+      var thu = JSON.parse(data);
+      console.log('data_data_data_load', thu)
+      this.setState({
+        ...this.state,
+        loading: false,
+        thu: thu.thu,
+        total: thu.total
+
+      });
+    } catch (e) {
+      console.log('Failed to load_AsyncStorage ', e)
+    }
+  }
+
+  save_Data = (thu) => {
+    if (thu !== null)
+      var arrayThu = [];
+
+    var arrayThu = thu;
+
+    console.log('Save_Data')
+    try {
+      AsyncStorage.setItem(KeyIncome, JSON.stringify(arrayThu))
+        .then(() => { console.log("Save Successfully") })
+    } catch (error) {
+      console.log('Failed to save_AsyncStorage', error);
+    }
+  }
 
   addThu = () => {
     this.setState({
@@ -41,7 +93,6 @@ class Home extends Component {
   }
 
   setValue = (text) => {
-
     this.setState({
       editMoneys: {
         ...this.state.editMoneys,
@@ -54,13 +105,21 @@ class Home extends Component {
     })
   }
 
-  onSubmit = () => {
-    var data = this.state.addMoneys;
-    this.state.thu.push(data);
-    var total = parseInt(this.state.total) + parseInt(data.money);
+  onSubmitAdd = () => {
+
+    var addThu = this.state.addMoneys;
+    if (!addThu === true)
+      return
+    this.state.thu.push(addThu);
+
+    var totals = parseInt(this.state.total) + parseInt(addThu.money);
+    var arrayThu = this.state.thu;
+    this.save_Data(this.state.thu, total);
+    this.props.storeAddIncome(totals, arrayThu);
     this.setState({
       addStatus: false,
-      total: total,
+      total: totals,
+      addMoneys: ''
     })
   }
 
@@ -78,12 +137,17 @@ class Home extends Component {
     }
 
     var editThu = this.state.editMoneys;
+    if (editThu.name === '' && editThu.money === '')
+      return
     this.state.thu.splice(this.state.index, 1, editThu),
       this.setState({
         editStatus: false,
         total: total
-      })
+      });
+    var arrayThu = this.state.thu;
+    this.props.storeEditIncome(total, arrayThu);
   }
+
 
   onClose = () => {
     this.setState({
@@ -92,7 +156,9 @@ class Home extends Component {
     })
   }
   render() {
-
+    console.log("Thu", this.state.thu)
+    if (!this.checkData() || this.state.loading)
+      return null;
     return (
       <Container >
         <Header>
@@ -129,7 +195,7 @@ class Home extends Component {
               </Item>
 
               <Item>
-                <Button block onPress={this.onSubmit} style={style.button_save} >
+                <Button block onPress={this.onSubmitAdd} style={style.button_save} >
                   <Title>ADD</Title>
                 </Button>
                 <Button block onPress={this.onClose} style={style.button_close} >
@@ -187,7 +253,6 @@ class Home extends Component {
                   </Button>
                   <Text>2019/08/14</Text>
                 </Right>
-
               </CardItem>
             </Card>
 
@@ -218,7 +283,17 @@ class Home extends Component {
   }
 }
 
-export default Home;
+const mapStateToProps = state => ({
+  total: state.income.total
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    storeAddIncome: (total, arrayThu) => dispatch(addIncome(total, arrayThu)),
+    storeEditIncome: (total, arrayThu) => dispatch(editIncome(total, arrayThu))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
 const style = StyleSheet.create({
   card: {

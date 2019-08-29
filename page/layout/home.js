@@ -21,8 +21,11 @@ class Home extends Component {
 	}
 
 	componentWillMount() {
-		if (!this.checkData())
+
+		if (!this.checkData()) {
+
 			this.save_Data();
+		}
 		this.load_Data();
 	}
 
@@ -31,12 +34,13 @@ class Home extends Component {
 		var hadData = false;
 		const value = await AsyncStorage.getItem(STORE_KEY);
 		if (value !== null)
+
 			hadData = true;
 		return hadData;
 	}
 
 	load_Data = async () => {
-		console.log("load_Data")
+		//console.log("load_Data")
 		try {
 			var data = await AsyncStorage.getItem(STORE_KEY);
 			var dataAccout = JSON.parse(data);
@@ -50,7 +54,7 @@ class Home extends Component {
 	}
 
 	save_Data = () => {
-		console.log('Save_Data')
+		//console.log('Save_Data')
 		try {
 			AsyncStorage.setItem(STORE_KEY, JSON.stringify(DataMoney))
 				.then(() => { console.log("Save Successfully") })
