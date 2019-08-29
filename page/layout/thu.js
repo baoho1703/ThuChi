@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native'
-import { Container, Content, Footer, Header, Body, Title, FooterTab, Button, Icon, Card, CardItem, Left, Right, View, Fab, Toast, Form, Item, Label, Input } from 'native-base'
-
+import { Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { Container, Content, Header, Body, Title, Button, Icon, Card, CardItem, Left, Right, Form, Item, Label, Input } from 'native-base'
+import IconPlus from 'react-native-vector-icons/FontAwesome5';
 import { FontAwesome } from '@expo/vector-icons';
 
 class Home extends Component {
@@ -14,11 +14,14 @@ class Home extends Component {
   initState = () => {
     this.state = {
       add: false,
+      edit: false,
       moneys: {
         name: '',
         money: ''
       },
       thu: [],
+      _edit: '',
+      index: '',
     }
   }
 
@@ -27,9 +30,20 @@ class Home extends Component {
       add: true,
     })
   }
-
-  setValue = (text) => {
+  editThu = (index) => {
     this.setState({
+      edit: true,
+      _edit: this.state.thu[index],
+      index: index,
+    })
+  }
+
+  setValue = (text) => {//data : chi cung dt gia tri
+    this.setState({
+      _edit: {
+        ...this.state._edit,
+        ...text,
+      },
       moneys: {
         ...this.state.moneys,
         ...text
@@ -43,12 +57,19 @@ class Home extends Component {
     this.setState({
       add: false,
     })
-    console.log('thu', this.state.thu)
+  }
+
+  onSubmitEdit = () => {
+    var editThu = this.state._edit;
+    this.state.thu.splice(this.state.index, 1, editThu),
+      this.setState({
+        edit: false
+      })
   }
   render() {
 
     return (
-      <Container style={{ width: "100%" }}>
+      <Container >
         <Header>
           <Body>
             <Title style={{ alignSelf: "center" }}>
@@ -56,39 +77,65 @@ class Home extends Component {
 						</Title>
           </Body>
           <Right>
-            <Button style={{ position: "absolute", right: 10, bottom: 0, top: -22 }} onPress={this.addThu} >
+            <Button style={style.buton_add} onPress={this.addThu} >
 
               <FontAwesome style={{ fontSize: 24 }} name="plus-circle"></FontAwesome>
             </Button>
           </Right>
         </Header>
         <Content style={{ backgroundColor: "#f2f2f2", position: 'relative' }}>
-          {
-            this.state.add && <Card style={{ marginTop: 10, width: "94%", alignSelf: "center", borderRadius: 8, backgroundColor: "#0000" }}>
-              <Form>
-                <Item fixedLabel>
-                  <Label style={{ borderRightWidth: 2 }}>Tên</Label>
-                  <Input
-                    onChangeText={(text) => this.setValue({ name: text })}
-                  />
-                </Item>
-                <Item fixedLabel last>
-                  <Label style={{ borderRightWidth: 2 }}>Số tiền</Label>
-                  <Input
-                    onChangeText={(text) => this.setValue({ money: text })}
-                  />
-                </Item>
-                <Button block onPress={this.onSubmit} style={{ marginTop: 10, borderRadius: 8, width: "30%", alignSelf: "center", marginTop: 0 }}>
-                  <Title>ADD</Title>
-                </Button>
-              </Form>
-            </Card>
+
+          {/* Add Thu Chi */}
+          {this.state.add && <Card style={style.card}>
+            <Form>
+              <Item fixedLabel>
+                <Label style={{ borderRightWidth: 2 }}>Tên</Label>
+                <Input
+                  onChangeText={(text) => this.setValue({ name: text })}
+                />
+              </Item>
+              <Item fixedLabel last>
+                <Label style={{ borderRightWidth: 2 }}>Số tiền</Label>
+                <Input
+                  onChangeText={(text) => this.setValue({ money: text })}
+                />
+              </Item>
+              <Button block onPress={this.onSubmit} style={style.button_save}>
+                <Title>ADD</Title>
+              </Button>
+            </Form>
+          </Card>
           }
 
+          {/* Edit Thu Chi */}
+          {this.state.edit && <Card style={style.card}>
+            <Form>
+              <Item fixedLabel>
+                <Label style={{ borderRightWidth: 2 }}>Tên</Label>
+                <Input
+                  value={this.state._edit.name}
+                  onChangeText={(text) => this.setValue({ name: text })}
+                />
+              </Item>
+              <Item fixedLabel last>
+                <Label style={{ borderRightWidth: 2 }}>Số tiền</Label>
+                <Input
+                  value={this.state._edit.money}
+                  onChangeText={(text) => this.setValue({ money: text })}
+                />
+              </Item>
+              <Button block onPress={this.onSubmitEdit} style={style.button_save}>
+                <Title>SAVE</Title>
+              </Button>
+            </Form>
+          </Card>
+          }
+
+          {/* List Thu Chi */}
           {
             this.state.thu.map((item, index) => {
-              return <Card style={{ marginTop: 10, width: "94%", alignSelf: "center", borderRadius: 8, backgroundColor: "#0000" }} key={index}>
-                <CardItem style={{ borderRadius: 8, borderWidth: 2, borderColor: "#000" }}>
+              return <Card style={style.card} key={index}>
+                <CardItem style={style.cardItem} >
                   <Left>
                     <Icon name="wallet" ></Icon>
                     <Body>
@@ -97,7 +144,7 @@ class Home extends Component {
                     </Body>
                   </Left>
                   <Right>
-                    <Button style={{ backgroundColor: "#0000", height: 20 }}>
+                    <Button onPress={() => this.editThu(index)} style={style.button_edit}>
                       <FontAwesome name="edit" style={{ fontSize: 24 }} ></FontAwesome>
                     </Button>
                     <Text>2019/08/14</Text>
@@ -108,8 +155,8 @@ class Home extends Component {
             })
           }
 
-          <Card style={{ marginTop: 10, width: "94%", alignSelf: "center", borderRadius: 8, backgroundColor: "#0000" }}>
-            <CardItem style={{ borderRadius: 8, borderWidth: 2, borderColor: "#000" }}>
+          <Card style={style.card}>
+            <CardItem style={style.cardItem}>
               <Left>
                 <Icon name="wallet" ></Icon>
                 <Body>
@@ -118,7 +165,7 @@ class Home extends Component {
                 </Body>
               </Left>
               <Right>
-                <Button style={{ backgroundColor: "#0000", height: 20 }}>
+                <Button onPress={this.editThu} style={style.button_edit}>
                   <FontAwesome name="edit" style={{ fontSize: 24 }} ></FontAwesome>
                 </Button>
                 <Text>2019/08/14</Text>
@@ -127,29 +174,62 @@ class Home extends Component {
           </Card>
 
         </Content>
-        <Footer>
-          <FooterTab>
-            <Button vertical>
-              <Icon name="home"></Icon>
-              <Text style={{ color: "white" }}>Home</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="calendar"></Icon>
-              <Text style={{ color: "white" }}>Thu</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="cart"></Icon>
-              <Text style={{ color: "white" }}>Chi</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="ios-stats"></Icon>
-              <Text style={{ color: "white" }}>Chart</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+        <TouchableOpacity
+          onPress={this.onPositionDown}
+          style={{
+            borderWidth: 1,
+            borderColor: 'rgba(0,0,0,0.2)',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 45,
+            position: 'absolute',
+            bottom: 10,
+            right: 10,
+            height: 45,
+            //backgroundColor: '#fff',
+            borderRadius: 100,
+            zIndex: 99,
+            //opacity:60
+          }}
+        >
+          <IconPlus name={"plus"} size={23} color={"#01a699"} style={{ opacity: 60 }} />
+        </TouchableOpacity>
+
       </Container >
     );
   }
 }
 
 export default Home;
+
+const style = StyleSheet.create({
+  card: {
+    marginTop: 10,
+    width: "94%",
+    alignSelf: "center",
+    borderRadius: 8,
+    backgroundColor: "#0000"
+  },
+  cardItem: {
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "#000"
+  },
+  button_edit: {
+    backgroundColor: "#0000",
+    height: 20
+  },
+  buton_add: {
+    position: "absolute",
+    right: 10,
+    bottom: 0,
+    top: -22
+  },
+  button_save: {
+    marginTop: 10,
+    borderRadius: 8,
+    width: "30%",
+    alignSelf: "center",
+    marginTop: 0
+  },
+})

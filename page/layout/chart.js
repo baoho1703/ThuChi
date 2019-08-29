@@ -1,39 +1,27 @@
 import React, { Component } from 'react';
-import { View } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import { Container, Content, Footer, Header, Body, Title, Label, Text, Form, Item, FooterTab, Button, Icon, List, ListItem, Accordion } from 'native-base'
 import { FontAwesome } from '@expo/vector-icons';
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart
-} from 'react-native-chart-kit'
-
-import { Dimensions } from 'react-native'
-const screenWidth = Dimensions.get('window').width
+import { PieChart } from 'react-native-chart-kit'
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.initState();
-  }
 
+  }
   initState = () => {
 
-  }
 
+  }
   render() {
-    const dataArray = [
-      { title: "Doanh Thu ", content: "1000000" },
-      { title: "Chi Tiêu", content: "1000000" },
-      { title: "Cân Đối", content: "1000000" }
-    ];
+    var Thu = this.props.thu;
+    var Chi = this.props.chi;
+    var Du = this.props.Du;
     const data = [
       { name: 'Thu', population: 10000000, color: 'rgba(131, 167, 234, 1)', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'credit-card' },
-      { name: 'Chi', population: 7000000, color: '#F00', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'cart-plus' },
-      { name: 'Dư', population: 3000000, color: 'rgb(0, 0, 255)', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'google-wallet' }
+      { name: 'Chi', population: 2000000, color: '#F00', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'cart-plus' },
+      { name: 'Dư', population: 8000000, color: 'rgb(0, 0, 255)', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'google-wallet' }
     ]
     return (
       <Container style={{ width: "100%" }}>
@@ -60,56 +48,17 @@ class Home extends Component {
             />
           </View>
           <List>
-            {/* {data.map((value, index) => {
-              <ListItem>
-                <FontAwesome name="credit-card" style={{ fontSize: 24 }}>   </FontAwesome>
-                <Label>Doanh Thu  :</Label>
-                <Label>  {data.population}</Label>
-              </ListItem>
-            })} */}
-
-
-
-            <ListItem itemDivider>
-              <Text>Doanh Thu</Text>
-            </ListItem>
-            <ListItem style={{ borderBottomWidth: 0 }}>
-              <Text >10000000</Text>
-            </ListItem>
-            <ListItem itemDivider>
-              <Text>Chi Tiêu </Text>
-            </ListItem>
-            <ListItem style={{ borderBottomWidth: 0 }}>
-              <Text>7000000</Text>
-            </ListItem>
-            <ListItem itemDivider>
-              <Text>Cân Đối</Text>
-            </ListItem>
-            <ListItem style={{ borderBottomWidth: 0 }}>
-              <Text>3000000</Text>
-            </ListItem>
-
-
-
-            {/* <ListItem>
-              <FontAwesome name="credit-card" style={{ fontSize: 24 }}>   </FontAwesome>
-              <Label>Doanh Thu  :</Label>
-              <Label>  {data.population}</Label>
-            </ListItem>
-            <ListItem>
-              <FontAwesome name="cart-plus" style={{ fontSize: 24 }}>   </FontAwesome>
-              <Label>Chi Tiêu       :</Label>
-              <Label>  {}}</Label>
-            </ListItem>
-            <ListItem>
-              <FontAwesome name="google-wallet" style={{ fontSize: 24 }}>   </FontAwesome>
-              <Label>Cân Đối        : </Label>
-              <Label> 3000000</Label>
-            </ListItem> */}
-
+            {data.map((value, index) => {
+              return (
+                <ListItem>
+                  <FontAwesome name={value.icon} style={{ fontSize: 24 }}>   </FontAwesome>
+                  <Label>{value.name}</Label>
+                  <Label>{value.population}</Label>
+                </ListItem>)
+            })}
           </List>
         </Content>
-        <Footer>
+        {/* <Footer>
           <FooterTab>
             <Button vertical>
               <Icon name="home"></Icon>
@@ -128,7 +77,7 @@ class Home extends Component {
               <Text>Chart</Text>
             </Button>
           </FooterTab>
-        </Footer>
+        </Footer> */}
       </Container>
     );
   }
@@ -136,6 +85,3 @@ class Home extends Component {
 
 export default Home;
 
-
-
-{/* <Accordion dataArray={dataArray} /> */ }

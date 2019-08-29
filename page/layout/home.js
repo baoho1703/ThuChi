@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native'
-import { Container, Content, Footer, Header, Body, Title, Label, Form, Item, FooterTab, Button, Icon, SwipeRow, View, Thumbnail, Right, List, ListItem, Left } from 'native-base'
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Container, Content, Footer, Header, Body, Title, Label, FooterTab, Button, Icon, Thumbnail, List, ListItem, Left } from 'native-base'
 
 import DataMoney from '../../data/dataAccout.json'
 import Uri from '../../image/user.png'
@@ -34,12 +34,16 @@ class Home extends Component {
 		//})
 	}
 	render() {
-		// var footerTab = [
-		// 	{ title: "Home", screen: "Screen1", icon: "home" },
-		// ]
 		var index = DataMoney.items.findIndex(t => t.username === "baoho");
 		var data = DataMoney.items[index];
 		const uri = Uri;
+		var accountInformation = [
+			{ name: 'Name', data: data.username },
+			{ name: 'So TK Vi', data: data.TK_Wallet },
+			{ name: 'So Tk Ngan Hang', data: data.TK_Bank },
+			{ name: 'Tong Tai Khoan', data: data.TK_Wallet + data.TK_Bank }
+		];
+
 		return (
 			<Container style={{ width: "100%" }}>
 				<Header>
@@ -51,76 +55,76 @@ class Home extends Component {
 				</Header>
 				<Content>
 					<Thumbnail large source={{ uri: uri }} style={{ borderWidth: 1, flex: 1, left: '40%', top: '15%' }} />
+
+					{/* List Thông tin người dùng	 */}
 					<List style={{ paddingTop: 100 }}>
-						<ListItem>
-							<Left>
-								<Label>Name</Label>
-							</Left>
-							<Body>
-								<Text>:  {data.username}</Text>
-							</Body>
-						</ListItem>
-
-						<ListItem>
-							<Left>
-								<Label>So TK Vi</Label>
-							</Left>
-							<Body>
-								<Text>:  {data.TK_Wallet} VND</Text>
-							</Body>
-						</ListItem>
-
-						<ListItem>
-							<Left>
-								<Label>So TK Ngan Hang</Label>
-							</Left>
-							<Body>
-								<Text>:  {data.TK_Bank} VND</Text>
-							</Body>
-						</ListItem>
-
-						<ListItem>
-							<Left>
-								<Label>Tổng Tài Khoản</Label>
-							</Left>
-							<Body>
-								<Text>:  {data.TK_Bank + data.TK_Wallet} VND</Text>
-							</Body>
-						</ListItem>
+						{accountInformation.map((value, index) => {
+							return (
+								<ListItem>
+									<Left>
+										<Label>{value.name}</Label>
+										<Text>:</Text>
+									</Left>
+									<Body>
+										<Text style={{ position: index == 0 ? '' : 'absolute', right: 60 }}>  {value.data}</Text>
+									</Body>
+								</ListItem>)
+						})}
 					</List>
 
-
 				</Content>
-				<Footer>
-					<FooterTab>
-						{this.footerTab}
-						{/* <Button  >
+				{/* <Footer>
+					<FooterTab> 
+						<Button onPress={() => this.props.navigation.navigate('Home')}>
 							<Icon name="home"></Icon>
 							<Text style={{ color: "white" }}>Home</Text>
 						</Button>
-						<Text style={{ color: "white" }}>Home</Text> */}
-						{/* <Button >
-							<Icon name="home"></Icon>
-							<Text style={{ color: "white" }}>Home</Text>
-						</Button>
-						<Button  >
+						<Button onPress={() => this.props.navigation.navigate('Thu')}>
 							<Icon name="calendar"></Icon>
 							<Text style={{ color: "white" }}>Thu</Text>
 						</Button>
-						<Button  >
+						<Button onPress={() => this.props.navigation.navigate('Chi')}>
 							<Icon name="cart"></Icon>
 							<Text style={{ color: "white" }}>Chi</Text>
 						</Button>
-						<Button  >
+						<Button onPress={() => this.props.navigation.navigate('Chart')}>
 							<Icon name="ios-stats"></Icon>
 							<Text style={{ color: "white" }}>Chart</Text>
-						</Button> */}
+						</Button>
 					</FooterTab>
-				</Footer>
+				</Footer> */}
 			</Container >
+
 		);
 	}
 }
 
 
 export default Home;
+
+const styles = StyleSheet.create({
+
+	MainContainer: {
+
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#f5fcff',
+		padding: 11
+
+	},
+
+	button: {
+		alignItems: 'center',
+		backgroundColor: '#43A047',
+		padding: 12,
+		width: 280,
+		marginTop: 12,
+	},
+
+	text: {
+
+		color: '#fff'
+	}
+
+});
