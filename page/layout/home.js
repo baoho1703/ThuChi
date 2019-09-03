@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Text, AsyncStorage } from 'react-native';
-import { Container, Content, Header, Body, Title, Label, Thumbnail, List, ListItem, Left } from 'native-base'
+import { Container, Content, Header, Body, Title, Label, Thumbnail, List, ListItem, Left, Spinner } from 'native-base'
 import { connect } from "react-redux"
 
-import DataMoney from '../../data/dataAccout.json'
+// import DataMoney from '../../data/dataAccout.json'
 import Uri from '../../image/user.png'
-
-const STORE_KEY = '1234123412341234';
+import { KEY_BANK_ACCOUNT } from '../../action/actionType';
 
 class Home extends Component {
 	constructor(props) {
@@ -16,77 +15,53 @@ class Home extends Component {
 
 	initState = () => {
 		this.state = {
+			dataAccout: [],
 			loading: true,
 		}
 	}
 
 	componentWillMount() {
-
-		if (!this.checkData()) {
-
-			this.save_Data();
-		}
-		this.load_Data();
+		this.loadData();
 	}
 
-	checkData = async () => {
-		//check
-		var hadData = false;
-		const value = await AsyncStorage.getItem(STORE_KEY);
-		if (value !== null)
-
-			hadData = true;
-		return hadData;
-	}
-
-	load_Data = async () => {
-		//console.log("load_Data")
+	loadData = async () => {
+		console.log('LOAD_DATA_+_+:')
 		try {
-			var data = await AsyncStorage.getItem(STORE_KEY);
-			var dataAccout = JSON.parse(data);
-			this.setState({
-				loading: false,
-				dataAccout
-			});
-		} catch (e) {
-			console.log('Failed to load_AsyncStorage ', e)
-		}
-	}
-
-	save_Data = () => {
-		//console.log('Save_Data')
-		try {
-			AsyncStorage.setItem(STORE_KEY, JSON.stringify(DataMoney))
-				.then(() => { console.log("Save Successfully") })
+			const data = JSON.parse(await AsyncStorage.getItem(KEY_BANK_ACCOUNT) || 'null');
+			console.log('data null', data)
+			if (data == 'null') {
+				this.setState({
+					loading: false,
+					dataAccout: [],
+				})
+			} else {
+				this.setState({
+					loading: false,
+					dataAccout: data
+				})
+			}
 		} catch (error) {
-			console.log('Failed to save_AsyncStorage', error);
+
 		}
 	}
 
-	render() {
-		if (!this.checkData() || this.state.loading)
-			return null;
-		const { dataAccout } = this.state;
-		var index = dataAccout.findIndex(t => t.username === this.props.account.username);
-		var data = dataAccout[index];
+	content_UI = () => {
+		if (this.state.loading) {
+			return <Spinner color='green' />;
+		}
+		else {
+			const { dataAccout } = this.state;
+			var index = dataAccout.findIndex(t => t.username === this.props.account.username);
+			var data = dataAccout[index];
 
-		var accountInformation = [
-			{ name: 'Name', data: data.username },
-			{ name: 'So TK Vi', data: data.TK_Wallet },
-			{ name: 'So Tk Ngan Hang', data: data.TK_Bank },
-			{ name: 'Tong Tai Khoan', data: data.TK_Wallet + data.TK_Bank }
-		];
+			var accountInformation = [
+				{ name: 'Name', data: data.username },
+				{ name: 'Money in wallet', data: ' ' + data.TK_Wallet + '  VND' },
+				{ name: 'Money in a bank account', data: data.TK_Bank + '  VND' },
+				{ name: 'Sum account', data: data.TK_Wallet + data.TK_Bank + '  VND' }
+			];
 
-		return (
-			<Container  >
-				{console.log('retrun')}
-				<Header>
-					<Body>
-						<Title style={{ alignSelf: "center" }}>
-							Thông Tin Tài Khoản
-						</Title>
-					</Body>
-				</Header>
+			return (
 				<Content>
 					<Thumbnail large source={{ uri: Uri }} style={{ borderWidth: 1, flex: 1, left: '40%', top: '15%' }} />
 
@@ -105,14 +80,29 @@ class Home extends Component {
 						})}
 					</List>
 				</Content>
+			)
+		}
+	}
+
+	render() {
+		return (
+			<Container >
+				<Header>
+					<Body>
+						<Title style={{ alignSelf: "center" }}>
+							Thông Tin Tài Khoản
+						</Title>
+					</Body>
+				</Header>
+				{this.content_UI()}
 			</Container >
 		);
 	}
 }
 
-const mapStateToProps = state => ({
-	account: state.account,
-})
-
+const mapStateToProps = state => (
+	{
+		account: state.account,
+	})
 
 export default connect(mapStateToProps, null)(Home);
