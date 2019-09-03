@@ -1,31 +1,31 @@
-import { APP_INCOME_ADD, APP_INCOME_EDIT, APP_INCOME_DELETE } from '../action/actionType'
+import { APP_SPEND_ADD, APP_SPEND_EDIT, APP_SPEND_DELETE } from '../action/actionType'
 
 const initState = {
   okLogin: false,
   total: 0,
-  arrayThu: []
+  arrayChi: []
 };
 
 export default (state = initState, action) => {
-  console.log("INCOME-=-=:", action)
+  console.log("SPEND_+_+_+:", action)
   switch (action.type) {
-    case APP_INCOME_ADD:
+    case APP_SPEND_ADD:
       return {
         ...state,
         total: action.total,
-        arrayThu: action.arrayThu,
+        arrayChi: action.arrayChi,
       }
-    case APP_INCOME_EDIT:
+    case APP_SPEND_EDIT:
       return {
         ...state,
         total: action.total,
-        arrayThu: action.arrayThu
+        arrayChi: action.arrayChi,
       }
-    case APP_INCOME_DELETE:
+    case APP_SPEND_DELETE:
       return {
         ...state,
         total: action.total,
-        arrayThu: action.arrayThu
+        arrayChi: action.arrayChi,
       }
     default:
       return state;

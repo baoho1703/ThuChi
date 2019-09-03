@@ -9,3 +9,5 @@ npm-debug.*
 *.orig.*
 web-build/
 web-report/
+action/actionAccount.js
+action/actionIncome.js

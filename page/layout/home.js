@@ -16,67 +16,117 @@ class Home extends Component {
 
 	initState = () => {
 		this.state = {
+			dataAccout: [],
 			loading: true,
+			checked: false,
+			save: false
 		}
 	}
+
+	// componentWillMount() {
+	// 	this.get(STORE_KEY);
+	// }
+
+	// componentWillReceiveProps(nextProps) {
+	// 	console.log('log ')
+	// 	if (!this.state.save)
+	// 		this.saveDate();
+	// }
+
+	// // 	async function set(key, value) {
+	// // 	try {
+	// // 		await AsyncStorage.setItem(key, JSON.stringify(value));
+	// // 	} catch (error) {
+	// // 		console.error(error);
+	// // 		return false;
+	// // 	}
+
+	// // 	return true;
+	// // }
+
+	// getAsync = async (key) => {
+	// 	try {
+	// 		return await AsyncStorage.getItem(key);
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 		return null;
+	// 	}
+	// }
+
+	// get = (key) => {
+	// 	this.setState({ checked: false })
+	// 	var items = [];
+	// 	this.getAsync(key).then(t => {
+	// 		this.setState({
+	// 			checked: true,
+	// 			save: true,
+	// 			loading: false,
+	// 			dataAccout: JSON.parse(t)
+	// 		})
+	// 		items = t;
+	// 		console.log('xxxxxxx: ', t)
+
+	// 	});
+	// 	return items;
+	// }
+
+	// getAsyncStorage = async () => {
+	// 	//check
+	// 	var hadData = true;
+	// 	const value = await AsyncStorage.getItem(STORE_KEY);
+	// 	value.then(t => { hadData = t });
+	// 	return hadData;
+	// }
 
 	componentWillMount() {
-
-		if (!this.checkData()) {
-
-			this.save_Data();
-		}
-		this.load_Data();
+		//this.loadData();
+		this.setState({ dataAccout: DataMoney })
 	}
 
-	checkData = async () => {
-		//check
-		var hadData = false;
-		const value = await AsyncStorage.getItem(STORE_KEY);
-		if (value !== null)
-			hadData = true;
-		return hadData;
-	}
-
-	load_Data = async () => {
-		console.log("load_Data")
+	loadData = async () => {
 		try {
-			var data = await AsyncStorage.getItem(STORE_KEY);
-			var dataAccout = JSON.parse(data);
-			this.setState({
-				loading: false,
-				dataAccout: dataAccout
-			});
-		} catch (e) {
-			console.log('Failed to load_AsyncStorage ', e)
+			const data = await AsyncStorage.getItem(STORE_KEY);
+			console.log('dâda', data)
+			if (data !== null) {
+				//	this.setState({ dataAccout: '' })
+				this.saveDate();
+			}
+		} catch (error) {
+
 		}
 	}
-
-	save_Data = async () => {
-		console.log('Save_Data')
+	saveDate = () => {
+		//console.log('Save_Data')
 		try {
-			await AsyncStorage.setItem(STORE_KEY, JSON.stringify(DataMoney))
-				.then(() => { console.log("Save Successfully") })
+			AsyncStorage.setItem(STORE_KEY, JSON.stringify(DataMoney))
+				.then(() => {
+					this.setState({
+						save: true,
+						dataAccout: DataMoney
+					})
+					console.log("Save Successfully")
+				})
 		} catch (error) {
 			console.log('Failed to save_AsyncStorage', error);
 		}
 	}
 
 	render() {
-
-		if (!this.checkData() || this.state.loading)
-			return null;
-		console.log('dataqq', this.state)
-		console.log('data', DataMoney)
+		// console.log('checked: ', this.state)
+		// const { checked, dataAccout } = this.state;
+		// if (!checked || (!dataAccout) || dataAccout.length == 0) {
+		// 	return null;
+		// }
+		console.log('state', this.state)
 		const { dataAccout } = this.state;
 		var index = dataAccout.findIndex(t => t.username === this.props.account.username);
 		var data = dataAccout[index];
 
 		var accountInformation = [
 			{ name: 'Name', data: data.username },
-			{ name: 'So TK Vi', data: data.TK_Wallet },
-			{ name: 'So Tk Ngan Hang', data: data.TK_Bank },
-			{ name: 'Tong Tai Khoan', data: data.TK_Wallet + data.TK_Bank }
+			{ name: 'Money in wallet', data: ' ' + data.TK_Wallet + '  VND' },
+			{ name: 'Money in a bank account', data: data.TK_Bank + '  VND' },
+			{ name: 'Sum account', data: data.TK_Wallet + data.TK_Bank + '  VND' }
 		];
 
 		return (
@@ -112,10 +162,9 @@ class Home extends Component {
 	}
 }
 
-const mapStateToProps = state => (
-	{
-		account: state.account,
-	})
+const mapStateToProps = state => ({
+	account: state.account,
+})
 
 
 export default connect(mapStateToProps, null)(Home);
