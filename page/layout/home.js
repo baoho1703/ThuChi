@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import Uri from '../../image/user.png'
 import { KEY_BANK_ACCOUNT } from '../../action/actionType';
 
+const STORE_KEY = '1234123412341234';
+
 class Home extends Component {
 	constructor(props) {
 		super(props);
