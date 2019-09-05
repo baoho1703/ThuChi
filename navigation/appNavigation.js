@@ -39,7 +39,7 @@ const Navigator = createBottomTabNavigator({
 			},
 		}),
 
-	}
+	},
 )
 
 export default createAppContainer(Navigator)

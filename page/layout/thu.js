@@ -17,13 +17,11 @@ class Home extends Component {
     this.state = {
       addStatus: false,
       editStatus: false,
-      deleteStatus: false,
       addMoneys: '',
       editMoneys: '',
-      deleteMoneys: '',
       index: '',
       total: 0,
-      arrayIncomr: [],
+      arrayIncome: [],
       loading: true,
       chosenDate: new Date(),
     }
@@ -31,16 +29,16 @@ class Home extends Component {
 
   componentWillMount() {
     this.load_Data();
+    // this.refresh()
   }
 
   load_Data = async () => {
     console.log("load_Data")
     try {
-      var data = await AsyncStorage.getItem(KEY_INCOME) || 'null';
-      var thu = JSON.parse(data);
-      console.log('data LOAD_DATA', thu, (thu == null))
-      if (thu == null) {
-        console.log('&&&&&&&')
+      var arrayIncome = JSON.parse(await AsyncStorage.getItem(KEY_INCOME) || 'null');
+      console.log('data LOAD_DATA', arrayIncome, (arrayIncome == null))
+      if (arrayIncome == null) {
+        console.log('DATA_+ null：')
         this.setState({
           ...this.state,
           loading: false,
@@ -49,31 +47,22 @@ class Home extends Component {
         });
       }
       else {
-        console.log('DATA_+load：', thu)
+        console.log('DATA_+load：', arrayIncome)
         this.setState({
           ...this.state,
           loading: false,
-          arrayIncome: thu.arrayIncome,
-          total: thu.total,
-
+          arrayIncome: arrayIncome.arrayIncome,
+          total: arrayIncome.total,
         })
         console.log('STATE:---+++:', this.state);
       }
     } catch (e) {
-      console.log('Failed to ===> Thu load_Data ::: AsyncStorage ', e)
+      console.log('Failed to ===> Thu load_Data ::: AsyncStorage =+> ', e)
     }
   }
 
-  save_Data = (total, arrayIncome) => {
-    try {
-      AsyncStorage.setItem(KEY_INCOME, JSON.stringify({ total, arrayIncome }))
-      this.setState({
-        total: total,
-        arrayIncome: arrayIncome,
-      })
-    } catch (error) {
-      console.log('Failed to save_AsyncStorage', error);
-    }
+  refresh = () => {
+    AsyncStorage.removeItem(KEY_INCOME);
   }
 
   addThu = () => {
@@ -91,20 +80,18 @@ class Home extends Component {
     })
   }
   deleteThu = (index) => {
-
-    var total = parseInt(this.state.total) - parseInt(this.state.arrayIncome[index].money);
+    var delMoney = parseInt(this.state.arrayIncome[index].money);
+    var total = parseInt(this.state.total) - delMoney;
     var arrayIncome = this.state.arrayIncome.splice(index, 1);
-    this.save_Data(total, this.state.arrayIncome);
-    console.log('total', total);
-    console.log('arraythu----------', arrayIncome)
+    console.log('total delete :', total);
+    console.log('arraythu delete : ', arrayIncome)
     this.setState({
-      deleteStatus: false,
       addStatus: false,
       editStatus: false,
       total: total,
       arrayIncome: this.state.arrayIncome
     })
-    this.props.storeDeleteIncome(this.state.total, this.state.arrayIncome);
+    this.props.storeDeleteIncome(total, this.state.arrayIncome, delMoney);
   }
 
   setValue = (text) => {
@@ -129,41 +116,31 @@ class Home extends Component {
 
     var totals = parseInt(this.state.total) + parseInt(addThu.money);
     var arrayIncome = this.state.arrayIncome;
-    this.save_Data(totals, arrayIncome);
-
+    var addMoney = parseInt(addThu.money);
     this.setState({
       addStatus: false,
-      //  total: totals,
-      // addMoneys: ''
+      total: totals,
     })
-    this.props.storeAddIncome(this.state.total, this.state.arrayIncome);
+    this.props.storeAddIncome(totals, arrayIncome, addMoney);
   }
 
   onSubmitEdit = () => {
     var exampleNew = parseInt(this.state.editMoneys.money);
     var exampleOld = parseInt(this.state.arrayIncome[this.state.index].money);
-    var totals = this.state.total;
-    if (exampleNew > exampleOld) {
-      var data = exampleNew - exampleOld;
-      var total = totals + data;
-    }
-    else {
-      var data = exampleOld - exampleNew;
-      var total = totals - data;
-    }
+    var data = exampleNew - exampleOld;
+    var total = this.state.total + data;
 
     var editThu = this.state.editMoneys;
     if (editThu.name === '' && editThu.money === '')
       return
     this.state.arrayIncome.splice(this.state.index, 1, editThu);
-    var arrayIncome = this.state.arrayIncome;
-    this.save_Data(total, arrayIncome);
+
     this.setState({
       editStatus: false,
-      //total: total
+      total: total
     });
 
-    this.props.storeEditIncome(this.state.total, this.state.arrayIncome);
+    this.props.storeEditIncome(total, this.state.arrayIncome, data);
   }
 
   onClose = () => {
@@ -241,16 +218,19 @@ class Home extends Component {
     return (
       <Container >
         <Header>
+          <Left>
+            <Button style={style.buton_add} onPress={this.refresh} >
+              <FontAwesome style={{ fontSize: 24 }} name="refresh"></FontAwesome>
+            </Button>
+          </Left>
           <Body>
             <Title style={{ alignSelf: "center" }}>
               Doanh Thu
             </Title>
             <Title style={{ fontSize: 13, paddingLeft: '25%' }}>Tong Thu:({this.state.total} VND)</Title>
-
           </Body>
           <Right>
             <Button style={style.buton_add} onPress={this.addThu} >
-
               <FontAwesome style={{ fontSize: 24 }} name="plus-circle"></FontAwesome>
             </Button>
           </Right>
@@ -295,18 +275,14 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  total: state.income.total
-})
-
 const mapDispatchToProps = dispatch => {
   return {
-    storeAddIncome: (total, arrayIncomr) => dispatch(addIncome(total, arrayIncomr)),
-    storeEditIncome: (total, arrayIncomr) => dispatch(editIncome(total, arrayIncomr)),
-    storeDeleteIncome: (total, arrayIncomr) => dispatch(deleteIncome(total, arrayIncomr))
+    storeAddIncome: (total, arrayIncome, addMoney) => dispatch(addIncome(total, arrayIncome, addMoney)),
+    storeEditIncome: (total, arrayIncome, editMoneys) => dispatch(editIncome(total, arrayIncome, editMoneys)),
+    storeDeleteIncome: (total, arrayIncome, delMoney) => dispatch(deleteIncome(total, arrayIncome, delMoney))
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(null, mapDispatchToProps)(Home);
 
 const style = StyleSheet.create({
   card: {

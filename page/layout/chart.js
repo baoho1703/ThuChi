@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Dimensions, StyleSheet, Text, ScrollView } from 'react-native'
+import { View, Dimensions, StyleSheet, Text, ScrollView, AsyncStorage } from 'react-native'
 import { Container, Content, Header, Body, Title, Label, List, ListItem } from 'native-base'
 import { FontAwesome } from '@expo/vector-icons';
 import { PieChart } from 'react-native-chart-kit';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
-import { connect } from 'react-redux'
+import { KEY_INCOME, KEY_SPEND } from '../../action/actionType'
+
 class Chart extends Component {
   constructor(props) {
     super(props);
@@ -12,23 +13,71 @@ class Chart extends Component {
   }
   initState = () => {
     this.state = {
-      arrayThu: this.props.incomeArrayThu,
-      arrayChi: this.props.spendArrayChi,
+      arrayIncome: [],
+      totalIncome: 0,
+      arraySpend: [],
+      totalSpend: 0,
     }
   }
 
+  componentWillMount() {
+    this.loadDataChart();
+  }
+
+  loadDataChart = async () => {
+    try {
+      var arrayIncome = JSON.parse(await AsyncStorage.getItem(KEY_INCOME) || 'null');
+      var arraySpend = JSON.parse(await AsyncStorage.getItem(KEY_SPEND) || 'null')
+      if (arrayIncome == null || arraySpend == null) {
+        if (arrayIncome == null && arraySpend != null) {
+          this.state({
+            arrayIncome: [],
+            totalIncome: 0,
+            arraySpend: arraySpend.arraySpend,
+            totalIncome: arraySpend.total,
+          })
+        }
+        if (arraySpend == null && arrayIncome != null) {
+          this.state({
+            arraySpend: [],
+            totalSpend: 0,
+            arrayIncome: arrayIncome.arrayIncome,
+            totalIncome: arrayIncome.total,
+          })
+        }
+        if (arraySpend == null && arrayIncome == null) {
+          this.state({
+            arrayIncome: [],
+            totalIncome: 0,
+            arraySpend: [],
+            totalSpend: 0,
+          })
+        }
+      }
+      else {
+        this.setState({
+          arrayIncome: arrayIncome.arrayIncome,
+          totalIncome: arrayIncome.total,
+          arraySpend: arraySpend.arraySpend,
+          totalSpend: arraySpend.total,
+        })
+      }
+    } catch (error) {
+      console.log('Error Load_Data_Chart ==>: ', error)
+    }
+  }
   tableIncome = () => {
     var tableHead = ['Name', 'Money Number(VND)'];
     var tableTitle = [];
     var tableData = [];
-    this.state.arrayThu.forEach(element => {
+    this.state.arrayIncome.forEach(element => {
       tableTitle.push(element.name);
     });
-    this.state.arrayThu.forEach(element => {
+    this.state.arrayIncome.forEach(element => {
       tableData.push([element.money]);
     });
     return (< View style={styles.container} >
-      <Text style={{ textAlign: "center", paddingBottom: 10 }}>History Income (Tổng: {this.props.totalIncome}} VND)</Text>
+      <Text style={{ textAlign: "center", paddingBottom: 10 }}>History Income (Tổng: {this.state.totalIncome}} VND)</Text>
       <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
         <Row data={tableHead} flexArr={[1, 2]} style={styles.head} textStyle={styles.text} />
         <TableWrapper style={styles.wrapper}>
@@ -44,14 +93,14 @@ class Chart extends Component {
     var tableHead = ['Name', 'Money Number(VND)'];
     var tableTitle = [];
     var tableData = [];
-    this.state.arrayChi.forEach(element => {
+    this.state.arraySpend.forEach(element => {
       tableTitle.push(element.name);
     });
-    this.state.arrayChi.forEach(element => {
+    this.state.arraySpend.forEach(element => {
       tableData.push([element.money]);
     });
     return (< View style={styles.container} >
-      <Text style={{ textAlign: "center", paddingBottom: 10 }}>History Spend (Tổng: {this.props.totalSpend}} VND)</Text>
+      <Text style={{ textAlign: "center", paddingBottom: 10 }}>History Spend (Tổng: {this.state.totalSpend}} VND)</Text>
       <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
         <Row data={tableHead} flexArr={[1, 2]} style={styles.head} textStyle={styles.text} />
         <TableWrapper style={styles.wrapper}>
@@ -64,9 +113,9 @@ class Chart extends Component {
   }
 
   render() {
-    var income = this.props.totalIncome;
-    var spend = this.props.totalSpend;
-    var data = [
+    var income = this.state.totalIncome;
+    var spend = this.state.totalSpend;
+    var dataChart = [
       { name: 'Thu', population: income, color: 'rgba(131, 167, 234, 1)', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'credit-card' },
       { name: 'Chi', population: spend, color: '#F00', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'cart-plus' },
       // { name: 'Dư', population: 8000000, color: 'rgb(0, 0, 255)', legendFontColor: '#7F7F7F', legendFontSize: 14, icon: 'google-wallet' }
@@ -85,7 +134,7 @@ class Chart extends Component {
           <ScrollView>
             <View>
               <PieChart
-                data={data}
+                data={dataChart}
                 width={Dimensions.get('window').width}
                 height={220}
                 chartConfig={{
@@ -98,7 +147,7 @@ class Chart extends Component {
               />
             </View>
             <List style={{ flex: 1, padding: 10 }}>
-              {data.map((value, index) => {
+              {dataChart.map((value, index) => {
                 return (
                   <ListItem key={index} >
                     <FontAwesome name={value.icon} style={{ fontSize: 24, padding: 15 }}>   </FontAwesome>
@@ -117,19 +166,8 @@ class Chart extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  totalIncome: state.income.total,
-  incomeArrayThu: state.income.arrayThu,
-  totalSpend: state.spend.total,
-  spendArrayChi: state.spend.arrayChi,
-})
 
-const mapDispatchToProps = dispatch => {
-  return {
-
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Chart);
+export default Chart;
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },

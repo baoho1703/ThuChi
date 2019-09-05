@@ -1,29 +1,32 @@
 import { APP_INCOME_ADD, APP_INCOME_EDIT, APP_INCOME_DELETE } from './actionType'
 
-export const addIncome = (total, arrayThu) => (
-  console.log('ADD_INCOME:', total, arrayThu),
+export const addIncome = (total, arrayIncome, addMoney) => (
+  console.log('ADD_INCOME:', total, arrayIncome, addMoney),
   {
     type: APP_INCOME_ADD,
     total,
-    arrayThu
+    arrayIncome,
+    addMoney,
   }
 )
 
-export const editIncome = (total, arrayThu) => (
-  console.log('EDIT_INCOME :', total, arrayThu),
+export const editIncome = (total, arrayIncome, editMoney) => (
+  console.log('EDIT_INCOME :', total, arrayIncome, editMoney),
   {
     type: APP_INCOME_EDIT,
     total,
-    arrayThu
+    arrayIncome,
+    editMoney,
   }
 )
 
-export const deleteIncome = (total, arrayThu) => (
-  console.log('DELETE_INCOME :', total, arrayThu),
+export const deleteIncome = (total, arrayIncome, delMoney) => (
+  console.log('DELETE_INCOME :', total, arrayIncome, delMoney),
   {
     type: APP_INCOME_DELETE,
     total,
-    arrayThu
+    arrayIncome,
+    delMoney,
   }
 )
 

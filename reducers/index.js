@@ -9,7 +9,7 @@ const rootReducers = combineReducers(
   {
     account: checkAccountReducers,
     income: income,
-    spend: spend
+    spend: spend,
   })
 
 export default rootReducers;

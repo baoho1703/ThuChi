@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Text, AsyncStorage } from 'react-native';
-import { Container, Content, Header, Body, Title, Label, Thumbnail, List, ListItem, Left, Spinner } from 'native-base'
-import { connect } from "react-redux"
-
-// import DataMoney from '../../data/dataAccout.json'
+import { Container, Content, Header, Body, Title, Label, Thumbnail, List, ListItem, Left, Spinner, Right } from 'native-base'
+import { connect } from 'react-redux'
+//import DataMoney from '../data/dataAccout.json'
 import Uri from '../../image/user.png'
 import { KEY_BANK_ACCOUNT } from '../../action/actionType';
 
@@ -15,7 +14,11 @@ class Home extends Component {
 
 	initState = () => {
 		this.state = {
-			dataAccout: [],
+			dataAccout: {
+				username: this.props.username,
+				TK_Wallet: 1000,
+				TK_Bank: this.props.TK_Bank,
+			},
 			loading: true,
 		}
 	}
@@ -24,40 +27,48 @@ class Home extends Component {
 		this.loadData();
 	}
 
+
 	loadData = async () => {
 		console.log('LOAD_DATA_+_+:')
 		try {
 			const data = JSON.parse(await AsyncStorage.getItem(KEY_BANK_ACCOUNT) || 'null');
 			console.log('data null', data)
-			if (data == 'null') {
+			if (data == null) {
+				console.log('lu nam nay lon qua', data)
+
 				this.setState({
 					loading: false,
-					dataAccout: [],
+					dataAccout: { ...this.state.dataAccout, TK_Bank: 0 },
 				})
 			} else {
+				console.log('mot mua lu ve', data)
 				this.setState({
 					loading: false,
-					dataAccout: data
+					dataAccout: data,
 				})
 			}
 		} catch (error) {
-
+			console.log('Error Home -=> :', error)
 		}
 	}
 
+	saveData = () => {
+		AsyncStorage.setItem(KEY_BANK_ACCOUNT, JSON.stringify(this.state.dataAccout))
+	}
+
 	content_UI = () => {
+
+		console.log('STATE=:=:', this.state)
 		if (this.state.loading) {
 			return <Spinner color='green' />;
 		}
 		else {
-			const { dataAccout } = this.state;
-			var index = dataAccout.findIndex(t => t.username === this.props.account.username);
-			var data = dataAccout[index];
-
+			this.saveData();
+			var data = this.state.dataAccout;
 			var accountInformation = [
 				{ name: 'Name', data: data.username },
 				{ name: 'Money in wallet', data: ' ' + data.TK_Wallet + '  VND' },
-				{ name: 'Money in a bank account', data: data.TK_Bank + '  VND' },
+				{ name: 'Money in a bank account', data: this.props.TK_Bank + '  VND' },
 				{ name: 'Sum account', data: data.TK_Wallet + data.TK_Bank + '  VND' }
 			];
 
@@ -74,7 +85,7 @@ class Home extends Component {
 										<Label>{value.name}</Label>
 									</Left>
 									<Body>
-										<Text>:  {value.data}</Text>
+										<Text>:{value.data}</Text>
 									</Body>
 								</ListItem>)
 						})}
@@ -85,6 +96,7 @@ class Home extends Component {
 	}
 
 	render() {
+
 		return (
 			<Container >
 				<Header>
@@ -101,8 +113,10 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => (
+	console.log('Money', state.income.total),
 	{
-		account: state.account,
+		username: state.account.username,
+		TK_Bank: state.income.total,
 	})
 
 export default connect(mapStateToProps, null)(Home);

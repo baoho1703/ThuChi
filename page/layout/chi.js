@@ -25,7 +25,6 @@ class Home extends Component {
       arraySpend: [],
       loading: true,
       checkData: false,
-
     }
   }
 
@@ -299,7 +298,7 @@ const mapDispatchToProps = dispatch => {
   return {
     storeAddSpend: (total, arraySpend) => dispatch(addSpend(total, arraySpend)),
     storeEditSpend: (total, arraySpend) => dispatch(editSpend(total, arraySpend)),
-    storeDeleteSpend: (total, arrayThu) => dispatch(deleteSpend(total, arrayThu))
+    storeDeleteSpend: (total, arraySpend) => dispatch(deleteSpend(total, arraySpend))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

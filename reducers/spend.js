@@ -3,7 +3,7 @@ import { APP_SPEND_ADD, APP_SPEND_EDIT, APP_SPEND_DELETE } from '../action/actio
 const initState = {
   okLogin: false,
   total: 0,
-  arrayChi: []
+  arraySpend: []
 };
 
 export default (state = initState, action) => {
@@ -13,19 +13,19 @@ export default (state = initState, action) => {
       return {
         ...state,
         total: action.total,
-        arrayChi: action.arrayChi,
+        arraySpend: action.arraySpend,
       }
     case APP_SPEND_EDIT:
       return {
         ...state,
         total: action.total,
-        arrayChi: action.arrayChi,
+        arraySpend: action.arraySpend,
       }
     case APP_SPEND_DELETE:
       return {
         ...state,
         total: action.total,
-        arrayChi: action.arrayChi,
+        arraySpend: action.arraySpend,
       }
     default:
       return state;
