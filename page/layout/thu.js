@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, AsyncStorage } from 'react-native'
-import { Container, Content, Header, Body, Title, Button, Icon, Card, CardItem, Left, Right, Form, Item, Label, Input, Spinner } from 'native-base'
+import { Container, Content, Header, Body, Title, Button, Icon, Card, CardItem, Left, Right, Form, Item, Label, Input, Spinner, Footer, FooterTab, } from 'native-base'
 import { FontAwesome } from '@expo/vector-icons';
 import { connect } from 'react-redux'
-import { addIncome, editIncome, deleteIncome } from '../../action/actionIncome';
+import { addIncome, editIncome, deleteIncome, totalIncome } from '../../action/actionIncome';
 import { KEY_INCOME } from '../../action/actionType'
 
 
@@ -214,6 +214,7 @@ class Home extends Component {
     if (this.state.loading) {
       return <Spinner color='green' />;
     }
+    this.props.total(this.state.total);
     console.log("state+++", this.state.total, this.state.arrayIncome)
     return (
       <Container >
@@ -270,6 +271,22 @@ class Home extends Component {
           }
 
         </Content>
+        {/* <Footer>
+          <FooterTab>
+            <Button onPress={() => navigate('Home', { name: 'Jane' })}>
+              <Text>Home</Text>
+            </Button>
+            <Button onPress={() => navigate('Thu', { name: 'Jane' })}>
+              <Text>Thu</Text>
+            </Button>
+            <Button onPress={() => navigate('Chi', { name: 'Jane' })}>
+              <Text>Chi</Text>
+            </Button>
+            <Button onPress={() => navigate('Chart', { name: 'Jane' })}>
+              <Text>Chart</Text>
+            </Button>
+          </FooterTab>
+        </Footer> */}
       </Container >
     );
   }
@@ -279,7 +296,10 @@ const mapDispatchToProps = dispatch => {
   return {
     storeAddIncome: (total, arrayIncome, addMoney) => dispatch(addIncome(total, arrayIncome, addMoney)),
     storeEditIncome: (total, arrayIncome, editMoneys) => dispatch(editIncome(total, arrayIncome, editMoneys)),
-    storeDeleteIncome: (total, arrayIncome, delMoney) => dispatch(deleteIncome(total, arrayIncome, delMoney))
+    storeDeleteIncome: (total, arrayIncome, delMoney) => dispatch(deleteIncome(total, arrayIncome, delMoney)),
+
+    total: (total) => dispatch(totalIncome(total))
+
   }
 }
 export default connect(null, mapDispatchToProps)(Home);

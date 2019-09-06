@@ -1,4 +1,4 @@
-import { APP_INCOME_ADD, APP_INCOME_EDIT, APP_INCOME_DELETE } from './actionType'
+import { APP_INCOME_ADD, APP_INCOME_EDIT, APP_INCOME_DELETE, APP_INCOME_TOTAL } from './actionType'
 
 export const addIncome = (total, arrayIncome, addMoney) => (
   console.log('ADD_INCOME:', total, arrayIncome, addMoney),
@@ -27,6 +27,15 @@ export const deleteIncome = (total, arrayIncome, delMoney) => (
     total,
     arrayIncome,
     delMoney,
+  }
+)
+
+export const totalIncome = (total) => (
+  console.log('DELETE_INCOME :', total),
+  {
+    type: APP_INCOME_TOTAL,
+    total,
+
   }
 )
 

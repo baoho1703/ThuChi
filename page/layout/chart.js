@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Dimensions, StyleSheet, Text, ScrollView, AsyncStorage } from 'react-native'
-import { Container, Content, Header, Body, Title, Label, List, ListItem } from 'native-base'
+import { Container, Content, Header, Body, Title, Label, List, ListItem, Footer, FooterTab, Button, } from 'native-base'
 import { FontAwesome } from '@expo/vector-icons';
 import { PieChart } from 'react-native-chart-kit';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
@@ -162,6 +162,22 @@ class Chart extends Component {
             {this.tableSpend()}
           </ScrollView>
         </Content>
+        {/* <Footer>
+          <FooterTab>
+            <Button onPress={() => navigate('Home', { name: 'Jane' })}>
+              <Text>Home</Text>
+            </Button>
+            <Button onPress={() => navigate('Thu', { name: 'Jane' })}>
+              <Text>Thu</Text>
+            </Button>
+            <Button onPress={() => navigate('Chi', { name: 'Jane' })}>
+              <Text>Chi</Text>
+            </Button>
+            <Button onPress={() => navigate('Chart', { name: 'Jane' })}>
+              <Text>Chart</Text>
+            </Button>
+          </FooterTab>
+        </Footer> */}
       </Container>
     );
   }

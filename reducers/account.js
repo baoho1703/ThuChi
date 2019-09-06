@@ -11,7 +11,6 @@ export default (state = initState, action) => {
   console.log('reducer_checkAccount', action);
   switch (action.type) {
     case APP_LOGIN:
-      AsyncStorage.getItem(KEY_BANK_ACCOUNT);
       return {
         ...state,
         username: action.username,

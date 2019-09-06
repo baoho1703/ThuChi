@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, AsyncStorage } from 'react-native'
-import { Container, Content, Header, Body, Title, Button, Icon, Card, CardItem, Left, Right, Form, Item, Label, Input, Spinner } from 'native-base'
+import { Container, Content, Header, Body, Title, Icon, Card, CardItem, Left, Right, Form, Item, Label, Input, Spinner, Footer, FooterTab, Button, } from 'native-base'
 import { FontAwesome } from '@expo/vector-icons';
 import { connect } from 'react-redux'
 import { addIncome, editIncome } from '../../action/actionIncome';
@@ -285,6 +285,24 @@ class Home extends Component {
           }
 
         </Content>
+
+        {/* <Footer>
+          <FooterTab>
+            <Button onPress={() => navigate('Home', {})}>
+              <Text>Home</Text>
+            </Button>
+            <Button onPress={() => navigate('Thu', {})}>
+              <Text>Thu</Text>
+            </Button>
+            <Button onPress={() => navigate('Chi', {})}>
+              <Text>Chi</Text>
+            </Button>
+            <Button onPress={() => navigate('Chart', {})}>
+              <Text>Chart</Text>
+            </Button>
+          </FooterTab>
+        </Footer> */}
+
       </Container >
     );
   }

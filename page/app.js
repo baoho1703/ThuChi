@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import Login from './account/login'
-import Navigation from '../navigation/appNavigation'
+import Navigation from './navigation'
 
 export default class App extends React.Component {
   constructor(props) {

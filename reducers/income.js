@@ -1,4 +1,4 @@
-import { APP_INCOME_ADD, APP_INCOME_EDIT, APP_INCOME_DELETE, KEY_BANK_ACCOUNT, KEY_INCOME } from '../action/actionType'
+import { APP_INCOME_ADD, APP_INCOME_EDIT, APP_INCOME_DELETE, APP_INCOME_TOTAL, KEY_BANK_ACCOUNT, KEY_INCOME } from '../action/actionType'
 import { AsyncStorage } from 'react-native'
 
 const initState = {
@@ -48,7 +48,7 @@ async function saveSumBank(total, type) {
 }
 
 export default (state = initState, action) => {
-  console.log("INCOME-=-=:", action)
+  console.log("INCOME-=-=:", action, state)
   switch (action.type) {
     case APP_INCOME_ADD:
       saveSumBank(action.addMoney, action.type);
@@ -75,6 +75,13 @@ export default (state = initState, action) => {
         ...state,
         total: action.total,
         arrayIncome: action.arrayIncome
+      }
+
+    case APP_INCOME_TOTAL:
+
+      return {
+        ...state,
+        total: action.total,
       }
 
     default:
