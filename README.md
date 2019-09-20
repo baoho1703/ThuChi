@@ -39,3 +39,10 @@ Chú ý bảng dữ liệu như sau:
 + Xuất/Nhập hàng - Invoice(Id, Code, Name, WarehouseId, Total, Discount, CreateDate, InvoiceDate) //InvoiceDate: Thời gian xuất/nhập, CreateDate: Thời gian tạo theo phần mềm
 + Chi tiết xuất/nhập - Detail(Id, InvoiceId, ProductId, Quanlity, Unit, Price)
 //Tất cả CreateDate: đều do hệ thống tự động tạo, không cho người dùng tác động tới, chỉ hiển thị.
+
+
+
+var d= a.split(0)[0]+a.split(a.split(0)[0])[1].substring(0,a.split(a.split(0)[0])[1].length-parseInt(a.split(0)[a.split(0).length-1]))+(parseInt(a.split(0)[a.split(0).length-1])+1)
+
+var a="PX00001"
+
