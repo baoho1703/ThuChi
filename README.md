@@ -1,3 +1,7 @@
+https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods
+https://tungnt.net/su-dung-cac-http-verbs-get-post-put-delete-trong-web-api/
+
+
 Vận dụng các sai lầm, các thiếu sót của các demo đã làm, Cả đội tiến hành xây dựng chung 1 phần mềm
 Đây là demo lớn cuối cùng, anh em tập trung làm tận tâm, xử lý tình huống đầy đủ, làm phần nào xong phần đó.
 Thời gian dự kiến cho anh em khoảng 16-20 ngày.
